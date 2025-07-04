@@ -101,7 +101,7 @@ export default function MeditationForm({ onSubmit, onCancel, isSubmitting, initi
     }
   }
 
-  const handleInputChange = (field: keyof MeditationFormData, value: any) => {
+  const handleInputChange = (field: keyof MeditationFormData, value: string | number | boolean | string[] | number[]) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
