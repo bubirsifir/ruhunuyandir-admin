@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback } from 'react'
 import { createClient } from '@/lib/supabase'
-import { Upload, X, File, AlertCircle } from 'lucide-react'
+import { Upload, X, File } from 'lucide-react'
 
 interface FileUploadProps {
   onUploadSuccess: (url: string, fileName: string) => void
@@ -49,7 +49,7 @@ export default function FileUpload({ onUploadSuccess, onUploadError }: FileUploa
       const fileName = `meditation_${timestamp}.${fileExtension}`
       
       // Supabase Storage'e yükle
-      const { data, error } = await supabase.storage
+      const { error } = await supabase.storage
         .from('meditation-audio')
         .upload(fileName, file, {
           cacheControl: '3600',
@@ -69,9 +69,9 @@ export default function FileUpload({ onUploadSuccess, onUploadError }: FileUploa
       setSelectedFile(null)
       setUploadProgress(100)
       
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Upload error:', error)
-      onUploadError(error.message || 'Dosya yükleme başarısız oldu.')
+      onUploadError((error as Error).message || 'Dosya yükleme başarısız oldu.')
     } finally {
       setUploading(false)
       setTimeout(() => setUploadProgress(0), 1000)

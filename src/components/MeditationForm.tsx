@@ -24,13 +24,13 @@ interface MeditationFormProps {
   onSubmit: (data: MeditationFormData) => void
   onCancel: () => void
   isSubmitting: boolean
-  initialData?: any
+  initialData?: Record<string, unknown>
   isEdit?: boolean
 }
 
 export default function MeditationForm({ onSubmit, onCancel, isSubmitting, initialData, isEdit = false }: MeditationFormProps) {
   const [categories, setCategories] = useState<MeditationCategory[]>([])
-  const [audioUrl, setAudioUrl] = useState('')
+  const [, setAudioUrl] = useState('')
   const [audioFileName, setAudioFileName] = useState('')
   const [newBenefit, setNewBenefit] = useState('')
   const [newDuration, setNewDuration] = useState('')
@@ -56,13 +56,13 @@ export default function MeditationForm({ onSubmit, onCancel, isSubmitting, initi
 
   useEffect(() => {
     loadCategories()
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (initialData && isEdit) {
       // Database'den gelen available_durations saniye cinsinden, dakikaya çevir
       const availableDurationsInMinutes = initialData.available_durations 
-        ? initialData.available_durations.map((duration: number) => Math.round(duration / 60))
+        ? (initialData.available_durations as number[]).map((duration: number) => Math.round(duration / 60))
         : [5, 10, 15, 20, 30, 60]; // Varsayılan değerler
 
       setFormData({

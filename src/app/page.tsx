@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { createClient, MeditationContent, MeditationCategory } from '@/lib/supabase'
-import { Upload, Music, Play, Pause, Trash2, Edit } from 'lucide-react'
+import { Upload, Music, Play, Trash2, Edit } from 'lucide-react'
 import Modal from '@/components/Modal'
 import MeditationForm from '@/components/MeditationForm'
 import AuthWrapper from '@/components/AuthWrapper'
@@ -21,7 +21,7 @@ export default function AdminPanel() {
   useEffect(() => {
     loadMeditations()
     loadCategories()
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadMeditations = async () => {
     try {
@@ -60,11 +60,11 @@ export default function AdminPanel() {
     }
   }
 
-  const handleAddMeditation = async (formData: any) => {
+  const handleAddMeditation = async (formData: Record<string, unknown>) => {
     setIsSubmitting(true)
     
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('meditation_content')
         .insert([
           {
@@ -94,21 +94,21 @@ export default function AdminPanel() {
       setIsModalOpen(false)
       loadMeditations() // Listeyi yenile
       
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error adding meditation:', error)
-      alert('Meditasyon eklenirken hata oluştu: ' + error.message)
+      alert('Meditasyon eklenirken hata oluştu: ' + (error as Error).message)
     } finally {
       setIsSubmitting(false)
     }
   }
 
-  const handleEditMeditation = async (formData: any) => {
+  const handleEditMeditation = async (formData: Record<string, unknown>) => {
     if (!editingMeditation) return
     
     setIsSubmitting(true)
     
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('meditation_content')
         .update({
           title: formData.title,
@@ -136,9 +136,9 @@ export default function AdminPanel() {
       setEditingMeditation(null)
       loadMeditations() // Listeyi yenile
       
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error updating meditation:', error)
-      alert('Meditasyon güncellenirken hata oluştu: ' + error.message)
+      alert('Meditasyon güncellenirken hata oluştu: ' + (error as Error).message)
     } finally {
       setIsSubmitting(false)
     }
@@ -159,9 +159,9 @@ export default function AdminPanel() {
       setDeletingMeditation(null)
       loadMeditations() // Listeyi yenile
       
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error deleting meditation:', error)
-      alert('Meditasyon silinirken hata oluştu: ' + error.message)
+      alert('Meditasyon silinirken hata oluştu: ' + (error as Error).message)
     }
   }
 
@@ -371,7 +371,7 @@ export default function AdminPanel() {
               Meditasyonu Sil
             </h3>
             <p className="text-sm text-gray-500 mb-6">
-              <strong>"{deletingMeditation.title}"</strong> adlı meditasyonu silmek istediğinizden emin misiniz? 
+              <strong>&ldquo;{deletingMeditation.title}&rdquo;</strong> adlı meditasyonu silmek istediğinizden emin misiniz? 
               Bu işlem geri alınamaz.
             </p>
             <div className="flex justify-center space-x-4">
