@@ -15,10 +15,13 @@ export interface MeditationContent {
   category_id: string
   meditation_duration: number
   audio_url: string
+  audio_file_duration?: number
+  content_type?: string
   is_loop: boolean
   loop_start_time?: number
   loop_end_time?: number
-  available_durations?: string
+  available_durations?: number[]
+  default_duration?: number
   difficulty_level?: string
   benefits?: string[]
   instructions?: string
@@ -26,6 +29,11 @@ export interface MeditationContent {
   is_active: boolean
   created_at: string
   updated_at: string
+  // Joined relation from query
+  meditation_categories?: {
+    name_turkish: string
+    color: string
+  }
 }
 
 export interface MeditationCategory {
