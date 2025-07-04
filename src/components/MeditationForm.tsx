@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { createClient, MeditationCategory } from '@/lib/supabase'
+import { createClient, MeditationCategory, MeditationContent } from '@/lib/supabase'
 import { Plus, X, AlertCircle, CheckCircle } from 'lucide-react'
 import FileUpload from './FileUpload'
 
@@ -24,7 +24,7 @@ interface MeditationFormProps {
   onSubmit: (data: MeditationFormData) => Promise<void>
   onCancel: () => void
   isSubmitting: boolean
-  initialData?: Record<string, unknown>
+  initialData?: MeditationContent | null
   isEdit?: boolean
 }
 
@@ -62,7 +62,7 @@ export default function MeditationForm({ onSubmit, onCancel, isSubmitting, initi
     if (initialData && isEdit) {
       // Database'den gelen available_durations saniye cinsinden, dakikaya çevir
       const availableDurationsInMinutes = initialData.available_durations 
-        ? (initialData.available_durations as number[]).map((duration: number) => Math.round(duration / 60))
+        ? initialData.available_durations.map((duration: number) => Math.round(duration / 60))
         : [5, 10, 15, 20, 30, 60]; // Varsayılan değerler
 
       setFormData({
