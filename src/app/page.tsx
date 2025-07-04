@@ -7,6 +7,22 @@ import Modal from '@/components/Modal'
 import MeditationForm from '@/components/MeditationForm'
 import AuthWrapper from '@/components/AuthWrapper'
 
+// MeditationFormData tipini import et
+interface MeditationFormData {
+  title: string
+  description: string
+  category_id: string
+  meditation_duration: number
+  is_loop: boolean
+  loop_start_time: number
+  loop_end_time: number
+  available_durations: number[]
+  difficulty_level: string
+  benefits: string[]
+  instructions: string
+  audio_url: string
+}
+
 export default function AdminPanel() {
   const [meditations, setMeditations] = useState<MeditationContent[]>([])
   const [categories, setCategories] = useState<MeditationCategory[]>([])
@@ -60,7 +76,7 @@ export default function AdminPanel() {
     }
   }
 
-  const handleAddMeditation = async (formData: Record<string, unknown>) => {
+  const handleAddMeditation = async (formData: MeditationFormData) => {
     setIsSubmitting(true)
     
     try {
@@ -102,7 +118,7 @@ export default function AdminPanel() {
     }
   }
 
-  const handleEditMeditation = async (formData: Record<string, unknown>) => {
+  const handleEditMeditation = async (formData: MeditationFormData) => {
     if (!editingMeditation) return
     
     setIsSubmitting(true)

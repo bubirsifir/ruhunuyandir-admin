@@ -21,7 +21,7 @@ interface MeditationFormData {
 }
 
 interface MeditationFormProps {
-  onSubmit: (data: MeditationFormData) => void
+  onSubmit: (data: MeditationFormData) => Promise<void>
   onCancel: () => void
   isSubmitting: boolean
   initialData?: Record<string, unknown>
